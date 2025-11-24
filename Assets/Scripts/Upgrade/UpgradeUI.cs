@@ -69,7 +69,7 @@ public class UpgradeUI : MonoBehaviour
         UpgradeData chosen = currentOptions[index];
 
         // 先关 UI 再回调
-        gameObject.SetActive(false);
+        panel.SetActive(false);
 
         onSelectedCallback?.Invoke(chosen);
     }
