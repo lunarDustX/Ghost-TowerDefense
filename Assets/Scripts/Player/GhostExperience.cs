@@ -43,6 +43,7 @@ public class GhostExperience : MonoBehaviour
     private void LevelUp()
     {
         currentLevel++;
+
         // 简单指数成长
         expToNextLevel = Mathf.RoundToInt(expToNextLevel * expGrowthFactor);
 

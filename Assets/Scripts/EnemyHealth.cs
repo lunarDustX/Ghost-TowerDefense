@@ -8,15 +8,20 @@ public class EnemyHealth : MonoBehaviour
     public int expOnDeath = 5;
 
     private float currentHealth;
+    private EnemyHitFlash hitFlash;
 
     void Awake()
     {
         currentHealth = maxHealth;
+        hitFlash = GetComponent<EnemyHitFlash>();
     }
 
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
+
+        // 受击反馈
+        hitFlash?.PlayFlash();
 
         if (currentHealth <= 0f)
         {

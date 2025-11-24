@@ -8,14 +8,9 @@ public class Upgrade_AuraRadius : UpgradeData
     public override void Apply()
     {
         var aura = FindObjectOfType<GhostAura>();
-        if (aura != null)
-        {
-            var col = aura.GetComponent<CircleCollider2D>();
-            if (col != null)
-            {
-                col.radius += radiusIncrease;
-                // TODO: 视觉半径更新
-            }
-        }
+        if (aura == null) return;
+
+        aura.radius += radiusIncrease;
+        aura.RefreshRadius();
     }
 }

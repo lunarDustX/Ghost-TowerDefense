@@ -3,14 +3,42 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class GhostAura : MonoBehaviour
 {
+    [Tooltip("半径")]
+    public float radius = 1.5f;
+
     [Header("检测塔的 Layer")]
     public LayerMask towerLayer;
 
+    [Header("Refs")]
+    public CircleCollider2D col;
+    public Transform visual;
+
+    private void Start()
+    {
+        Reset();
+    }
+
     private void Reset()
     {
-        // 自动设置成 Trigger
-        var col = GetComponent<Collider2D>();
+        if (col == null)
+            col = GetComponent<CircleCollider2D>();
+
+        col.radius = radius;
         col.isTrigger = true;
+
+        UpdateVisual(radius);
+    }
+
+    private void UpdateVisual(float r)
+    {
+        if (visual)
+            visual.localScale = Vector2.one * r * 2f;
+    }
+
+    public void RefreshRadius()
+    {
+        col.radius = radius;
+        UpdateVisual(radius);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

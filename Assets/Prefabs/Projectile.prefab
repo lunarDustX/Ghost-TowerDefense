@@ -195,6 +195,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 8
   maxLifeTime: 3
+  hitVfxPrefab: {fileID: 7577687047666938863, guid: 9dfe84410a92b45cb821cdeafdbe562c, type: 3}
 --- !u!1 &6645456488228604322
 GameObject:
   m_ObjectHideFlags: 0
