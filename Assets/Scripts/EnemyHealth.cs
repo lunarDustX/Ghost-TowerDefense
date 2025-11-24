@@ -10,6 +10,9 @@ public class EnemyHealth : MonoBehaviour
     private float currentHealth;
     private EnemyHitFlash hitFlash;
 
+    public float CurrentHealth => currentHealth;
+    public float MaxHealth => maxHealth;
+
     void Awake()
     {
         currentHealth = maxHealth;
