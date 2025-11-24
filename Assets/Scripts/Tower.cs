@@ -14,13 +14,22 @@ public class Tower : MonoBehaviour
     [Header("敌人层")]
     public LayerMask enemyLayer;
 
-    // 当前实际生效的参数（包含幽灵 Aura buff 后）
+    // 当前实际生效的参数
     private float currentDamage;
     private float currentAttackCooldown;
     private float currentRange;
 
     private float cooldownTimer;
     private bool isBuffedByGhost;
+
+    // --- 暴露信息参数 ---
+    public float BaseDamage => baseDamage;
+    public float BaseAttackCooldown => baseAttackCooldown;
+    public float BaseRange => baseRange;
+
+    public float CurrentDamage => currentDamage;
+    public float CurrentAttackCooldown => currentAttackCooldown;
+    public float CurrentRange => currentRange;
 
     void Start()
     {
