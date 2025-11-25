@@ -277,8 +277,14 @@ MonoBehaviour:
   bgmVolume: 1
   sfxSource: {fileID: 1838939755}
   bgmSource: {fileID: 758959097}
-  sfxEntries: []
-  bgmEntries: []
+  sfxEntries:
+  - type: 200
+    clip: {fileID: 8300000, guid: 11b81eaa6db4e48bcaf076c3f6fd268d, type: 3}
+    baseVolume: 0.5
+  bgmEntries:
+  - type: 0
+    clip: {fileID: 8300000, guid: c01b4c06d43db4c43aae9d03fca3327c, type: 3}
+    baseVolume: 0.5
 --- !u!1 &483002668
 GameObject:
   m_ObjectHideFlags: 0
@@ -3041,6 +3047,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4859514677307145497, guid: ddaa351d12ea34a5392e841902c5aac2, type: 3}
+      propertyPath: radius
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5535794848299105856, guid: ddaa351d12ea34a5392e841902c5aac2, type: 3}
+      propertyPath: m_Radius
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5574589490802519767, guid: ddaa351d12ea34a5392e841902c5aac2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.3495374
@@ -3080,6 +3094,14 @@ PrefabInstance:
     - target: {fileID: 5574589490802519767, guid: ddaa351d12ea34a5392e841902c5aac2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8961276695995657647, guid: ddaa351d12ea34a5392e841902c5aac2, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8961276695995657647, guid: ddaa351d12ea34a5392e841902c5aac2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9047756318195132908, guid: ddaa351d12ea34a5392e841902c5aac2, type: 3}
       propertyPath: m_Sprite

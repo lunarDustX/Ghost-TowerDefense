@@ -25,6 +25,7 @@ public class EnemyHealth : MonoBehaviour
 
         // 受击反馈
         hitFlash?.PlayFlash();
+        AudioMgr.I.PlaySFX(SFXType.ProjectileHit);
 
         if (currentHealth <= 0f)
         {

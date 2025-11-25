@@ -29,6 +29,11 @@ public class GhostAura : MonoBehaviour
         UpdateVisual(radius);
     }
 
+    private void OnValidate()
+    {
+        RefreshRadius();
+    }
+
     private void UpdateVisual(float r)
     {
         if (visual)
