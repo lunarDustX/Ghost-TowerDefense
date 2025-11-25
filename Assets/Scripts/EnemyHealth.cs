@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
@@ -12,6 +13,9 @@ public class EnemyHealth : MonoBehaviour
 
     public float CurrentHealth => currentHealth;
     public float MaxHealth => maxHealth;
+
+    // 敌人死亡/被销毁时全局广播
+    public static event Action<EnemyHealth> OnAnyEnemyDestroyed;
 
     void Awake()
     {
@@ -43,5 +47,11 @@ public class EnemyHealth : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        // 任何原因（被打死 / 到终点自己 Destroy / 被别的系统清理）都会触发
+        OnAnyEnemyDestroyed?.Invoke(this);
     }
 }

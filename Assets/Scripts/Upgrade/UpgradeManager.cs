@@ -34,8 +34,9 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
 
-        // 暂停游戏（可选）
+        // 暂停游戏
         Time.timeScale = 0f;
+        AudioMgr.I.PlaySFX(SFXType.GhostUpgrade);
 
         // 打开 UI
         if (upgradeUI != null)

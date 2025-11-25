@@ -51,7 +51,7 @@ public class GhostAura : MonoBehaviour
         if (!IsTowerLayer(other.gameObject.layer))
             return;
 
-        Tower tower = other.GetComponent<Tower>();
+        Tower tower = other.GetComponentInParent<Tower>();
         if (tower != null)
         {
             tower.SetGhostBuffed(true);
@@ -63,7 +63,7 @@ public class GhostAura : MonoBehaviour
         if (!IsTowerLayer(other.gameObject.layer))
             return;
 
-        Tower tower = other.GetComponent<Tower>();
+        Tower tower = other.GetComponentInParent<Tower>();
         if (tower != null)
         {
             tower.SetGhostBuffed(false);

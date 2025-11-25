@@ -49,7 +49,7 @@ public class SelectionManager : MonoBehaviour
     void TrySelect(GameObject go)
     {
         // 优先判塔
-        Tower tower = go.GetComponent<Tower>();
+        Tower tower = go.GetComponentInParent<Tower>();
         EnemyHealth enemy = null;
 
         if (tower != null)

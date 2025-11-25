@@ -14,6 +14,11 @@ public class Tower : MonoBehaviour
     [Header("敌人层")]
     public LayerMask enemyLayer;
 
+    [Header("Refs")]
+    [SerializeField] SpriteRenderer sr;
+    [SerializeField] Sprite spr_normal;
+    [SerializeField] Sprite spr_buff;
+
     // 当前实际生效的参数
     private float currentDamage;
     private float currentAttackCooldown;
@@ -42,6 +47,12 @@ public class Tower : MonoBehaviour
             return;
 
         isBuffedByGhost = value;
+
+        // 反馈
+        sr.sprite = isBuffedByGhost ? spr_buff : spr_normal;
+        if (isBuffedByGhost)
+            AudioMgr.I.PlaySFX(SFXType.TowerBuffing);
+
         RecalculateStats();
     }
 

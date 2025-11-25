@@ -211,6 +211,11 @@ public enum SFXType
     ProjectileHit = 200,
 
     EnemyDie = 300,
+
+    TowerBuffing = 400,
+
+    GhostUpgrade = 500,
+
 }
 
 public enum BGMType
