@@ -4,12 +4,15 @@ public class EnemyMover : MonoBehaviour
 {
     [HideInInspector] public Path path;
 
-    public float speed = 2f;
+    public float baseSpeed = 1.5f;
     public float reachThreshold = 0.1f;
 
     [Tooltip("到终点时对玩家造成的伤害")]
     public int leakDamage = 1;
 
+    public float CurrentSpeed => baseSpeed * speedMultiplier;
+
+    private float speedMultiplier = 1f;     // 各种 buff/debuff 叠加在这
     int currentIndex = 0;
 
     // 新增：0~1 的路径进度
@@ -36,7 +39,7 @@ public class EnemyMover : MonoBehaviour
 
         Vector3 target = path.GetPoint(currentIndex);
         Vector3 direction = (target - transform.position).normalized;
-        transform.position += direction * speed * Time.deltaTime;
+        transform.position += direction * CurrentSpeed * Time.deltaTime;
 
         //if (direction != Vector3.zero)
         //    transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
@@ -82,6 +85,17 @@ public class EnemyMover : MonoBehaviour
 
         float segmentIndex = prevIndex + t;
         PathProgress01 = Mathf.Clamp01(segmentIndex / lastIndex);
+    }
+
+    // 提供给减速领域用的接口
+    public void AddSpeedMultiplier(float multiplier)
+    {
+        speedMultiplier *= multiplier;
+    }
+
+    public void RemoveSpeedMultiplier(float multiplier)
+    {
+        speedMultiplier /= multiplier;
     }
 
     private void OnReachGoal()
