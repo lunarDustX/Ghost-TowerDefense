@@ -2,9 +2,13 @@ using UnityEngine;
 
 public class EnemyMover : MonoBehaviour
 {
-    public Path path;
+    [HideInInspector] public Path path;
+
     public float speed = 2f;
     public float reachThreshold = 0.1f;
+
+    [Tooltip("到终点时对玩家造成的伤害")]
+    public int leakDamage = 1;
 
     int currentIndex = 0;
 
@@ -83,6 +87,13 @@ public class EnemyMover : MonoBehaviour
     private void OnReachGoal()
     {
         Debug.Log("Enemy reached the goal!");
+
+        // 敌人成功到终点 → 扣玩家生命
+        if (GameLifeManager.Instance != null)
+        {
+            GameLifeManager.Instance.LoseLife(leakDamage);
+        }
+
         Destroy(gameObject);
     }
 }
