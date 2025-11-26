@@ -11,7 +11,7 @@ public class SelectionManager : MonoBehaviour
     [Header("射线检测最大距离")]
     public float maxRayDistance = 100f;
 
-    private Tower currentTower;
+    private TowerBase currentTower;
     private EnemyHealth currentEnemy;
 
     void Update()
@@ -48,8 +48,8 @@ public class SelectionManager : MonoBehaviour
 
     void TrySelect(GameObject go)
     {
-        // 优先判塔
-        Tower tower = go.GetComponentInParent<Tower>();
+        // 优先判塔（任何继承 TowerBase 的都算）
+        TowerBase tower = go.GetComponentInParent<TowerBase>();
         EnemyHealth enemy = null;
 
         if (tower != null)
@@ -59,7 +59,7 @@ public class SelectionManager : MonoBehaviour
         }
 
         // 再判敌人
-        enemy = go.GetComponent<EnemyHealth>();
+        enemy = go.GetComponentInParent<EnemyHealth>();
         if (enemy != null)
         {
             SelectEnemy(enemy);
@@ -70,7 +70,7 @@ public class SelectionManager : MonoBehaviour
         ClearSelection();
     }
 
-    void SelectTower(Tower tower)
+    void SelectTower(TowerBase tower)
     {
         currentTower = tower;
         currentEnemy = null;

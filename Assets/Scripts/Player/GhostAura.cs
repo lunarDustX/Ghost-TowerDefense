@@ -10,28 +10,35 @@ public class GhostAura : MonoBehaviour
     public LayerMask towerLayer;
 
     [Header("Refs")]
-    public CircleCollider2D col;
-    public Transform visual;
+    [SerializeField] CircleCollider2D col;
+    [SerializeField] Transform visual;
 
     private void Start()
     {
-        Reset();
+        InitColliderAndVisual();
     }
 
     private void Reset()
     {
+        InitColliderAndVisual();
+    }
+
+    private void InitColliderAndVisual()
+    {
         if (col == null)
             col = GetComponent<CircleCollider2D>();
 
-        col.radius = radius;
         col.isTrigger = true;
-
-        UpdateVisual(radius);
+        RefreshRadius();
     }
 
     private void OnValidate()
     {
-        RefreshRadius();
+        if (col == null)
+            col = GetComponent<CircleCollider2D>();
+
+        if (col != null)
+            RefreshRadius();
     }
 
     private void UpdateVisual(float r)
@@ -42,7 +49,9 @@ public class GhostAura : MonoBehaviour
 
     public void RefreshRadius()
     {
-        col.radius = radius;
+        if (col != null)
+            col.radius = radius;
+
         UpdateVisual(radius);
     }
 
@@ -51,10 +60,11 @@ public class GhostAura : MonoBehaviour
         if (!IsTowerLayer(other.gameObject.layer))
             return;
 
-        Tower tower = other.GetComponentInParent<Tower>();
-        if (tower != null)
+        // 这里改成找接口，而不是具体 Tower
+        var buffable = other.GetComponentInParent<IGhostBuffable>();
+        if (buffable != null)
         {
-            tower.SetGhostBuffed(true);
+            buffable.SetGhostBuffed(true);
         }
     }
 
@@ -63,10 +73,10 @@ public class GhostAura : MonoBehaviour
         if (!IsTowerLayer(other.gameObject.layer))
             return;
 
-        Tower tower = other.GetComponentInParent<Tower>();
-        if (tower != null)
+        var buffable = other.GetComponentInParent<IGhostBuffable>();
+        if (buffable != null)
         {
-            tower.SetGhostBuffed(false);
+            buffable.SetGhostBuffed(false);
         }
     }
 

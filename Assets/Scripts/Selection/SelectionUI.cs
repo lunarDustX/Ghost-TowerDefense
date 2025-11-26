@@ -22,7 +22,7 @@ public class SelectionUI : MonoBehaviour
         Hide();
     }
 
-    public void ShowTower(Tower tower)
+    public void ShowTower(TowerBase tower)
     {
         root.SetActive(true);
 

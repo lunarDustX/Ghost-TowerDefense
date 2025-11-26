@@ -11,8 +11,8 @@ public class Upgrade_TowerDamageBuff : UpgradeData
         {
             AuraBuffProvider.Instance.towerDamageAdd += extraMultiplier;
 
-            // 让所有塔重新计算面板（可选增强）
-            var towers = GameObject.FindObjectsOfType<Tower>();
+            // 让所有塔重新计算面板
+            var towers = FindObjectsOfType<TowerBase>();
             foreach (var t in towers)
             {
                 t.ForceRecalculateStats();

@@ -1,31 +1,27 @@
 using UnityEngine;
 
-public class Tower : MonoBehaviour
+public abstract class TowerBase : MonoBehaviour, IGhostBuffable
 {
     [Header("基础攻击参数")]
     public float baseDamage = 3f;
     public float baseAttackCooldown = 0.8f;
     public float baseRange = 3f;
 
-    [Header("子弹参数")]
-    public Projectile projectilePrefab;
-    public Transform firePoint;
-
     [Header("敌人层")]
     public LayerMask enemyLayer;
 
-    [Header("Refs")]
-    [SerializeField] SpriteRenderer sr;
-    [SerializeField] Sprite spr_normal;
-    [SerializeField] Sprite spr_buff;
+    [Header("视觉")]
+    [SerializeField] protected SpriteRenderer sr;
+    [SerializeField] protected Sprite spr_normal;
+    [SerializeField] protected Sprite spr_buff;
 
     // 当前实际生效的参数
-    private float currentDamage;
-    private float currentAttackCooldown;
-    private float currentRange;
+    protected float currentDamage;
+    protected float currentAttackCooldown;
+    protected float currentRange;
 
-    private float cooldownTimer;
-    private bool isBuffedByGhost;
+    protected float cooldownTimer;
+    protected bool isBuffedByGhost;
 
     // --- 暴露信息参数 ---
     public float BaseDamage => baseDamage;
@@ -36,12 +32,14 @@ public class Tower : MonoBehaviour
     public float CurrentAttackCooldown => currentAttackCooldown;
     public float CurrentRange => currentRange;
 
-    void Start()
+    public bool IsBuffedByGhost => isBuffedByGhost;
+
+    protected virtual void Start()
     {
         RecalculateStats();
     }
 
-    public void SetGhostBuffed(bool value)
+    public virtual void SetGhostBuffed(bool value)
     {
         if (isBuffedByGhost == value)
             return;
@@ -49,7 +47,9 @@ public class Tower : MonoBehaviour
         isBuffedByGhost = value;
 
         // 反馈
-        sr.sprite = isBuffedByGhost ? spr_buff : spr_normal;
+        if (sr != null)
+            sr.sprite = isBuffedByGhost ? spr_buff : spr_normal;
+
         if (isBuffedByGhost)
             AudioMgr.I.PlaySFX(SFXType.TowerBuffing);
 
@@ -64,11 +64,35 @@ public class Tower : MonoBehaviour
         RecalculateStats();
     }
 
-    private void RecalculateStats()
+    /// <summary>
+    /// 对外统一调用的重算函数，内部会处理冷却平滑。
+    /// 子类只需要重写 RecalculateStatsInternal 来扩展自己的额外属性逻辑。
+    /// </summary>
+    protected void RecalculateStats()
     {
         float oldCooldown = currentAttackCooldown > 0f ? currentAttackCooldown : baseAttackCooldown;
         float oldTimer = cooldownTimer;
 
+        RecalculateStatsInternal();
+
+        // 冷却进度平滑：
+        if (oldCooldown > 0f)
+        {
+            float remainingRatio = Mathf.Clamp01(oldTimer / oldCooldown);
+            cooldownTimer = remainingRatio * currentAttackCooldown;
+
+            if (oldTimer <= 0f)
+            {
+                cooldownTimer = 0f;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 子类可以在这里扩展自己的属性计算（例如 AOE 半径等）。
+    /// </summary>
+    protected virtual void RecalculateStatsInternal()
+    {
         // 1) 先用基础面板
         currentDamage = baseDamage;
         currentAttackCooldown = baseAttackCooldown;
@@ -89,24 +113,9 @@ public class Tower : MonoBehaviour
             // 攻速使用“倍率”来缩短冷却时间
             currentAttackCooldown = baseAttackCooldown / Mathf.Max(atkSpdMul, 0.01f);
         }
-
-        // 3) 冷却进度平滑：
-        //    保持“已经走掉的冷却比例”不变，避免 buff/失去 buff 时手感怪异
-        if (oldCooldown > 0f)
-        {
-            // oldTimer 越小，说明越接近下一发
-            float remainingRatio = Mathf.Clamp01(oldTimer / oldCooldown);  // 0~1：1 表示刚开始冷却
-            cooldownTimer = remainingRatio * currentAttackCooldown;
-
-            // 如果冷却本来已经结束，不要硬拉回去
-            if (oldTimer <= 0f)
-            {
-                cooldownTimer = 0f;
-            }
-        }
     }
 
-    void Update()
+    protected virtual void Update()
     {
         cooldownTimer -= Time.deltaTime;
 
@@ -121,7 +130,7 @@ public class Tower : MonoBehaviour
         }
     }
 
-    private EnemyHealth FindTarget()
+    protected virtual EnemyHealth FindTarget()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, currentRange, enemyLayer);
         if (hits.Length == 0)
@@ -132,7 +141,6 @@ public class Tower : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            // 必须是有 EnemyMover 的对象，才认为是“在路上的怪”
             var mover = hit.GetComponent<EnemyMover>();
             var health = hit.GetComponent<EnemyHealth>();
 
@@ -149,25 +157,16 @@ public class Tower : MonoBehaviour
             }
         }
 
-        // 如果周围怪都没有 EnemyMover，就返回 null
         return bestEnemy;
     }
 
-
-    private void Shoot(EnemyHealth target)
-    {
-        if (projectilePrefab == null || firePoint == null)
-        {
-            Debug.LogWarning("[Tower] 缺少 projectilePrefab 或 firePoint", this);
-            return;
-        }
-
-        Projectile proj = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-        proj.Init(target.transform, currentDamage);
-    }
+    /// <summary>
+    /// 子类实现具体的攻击方式（单体/aoe等）
+    /// </summary>
+    protected abstract void Shoot(EnemyHealth target);
 
 #if UNITY_EDITOR
-    void OnDrawGizmosSelected()
+    protected virtual void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;
         float r = Application.isPlaying ? (currentRange > 0 ? currentRange : baseRange) : baseRange;
