@@ -12,10 +12,6 @@ public class ExplosionShockwave : MonoBehaviour
     [Header("内圈颜色（固定不变）")]
     public Color innerColor = new Color(0.5f, 0.5f, 0.6f);
 
-    [Header("内圈轻微脉冲幅度（0 = 不脉冲）")]
-    [Range(0f, 0.2f)]
-    public float innerPulseAmplitude = 0.05f;
-
     [Header("渲染引用")]
     public SpriteRenderer outerFlash;   // 白色外圈
     public SpriteRenderer innerWave;    // 固定颜色内圈
@@ -60,23 +56,6 @@ public class ExplosionShockwave : MonoBehaviour
         {
             float outerT = t / Mathf.Max(0.0001f, outerFlashPortion);
             outerFlash.enabled = outerT < 1f;
-        }
-
-        // 2) 内圈：可选轻微脉冲，整体大小始终 ≈ 爆炸半径
-        if (innerWave != null)
-        {
-            float scale = baseScale;
-
-            if (innerPulseAmplitude > 0f)
-            {
-                // 在 0~duration 内做一次轻微呼吸（从1.0缩到0.9再回到1.0之类）
-                // 用一个简易的减幅 sin 曲线
-                float pulse = Mathf.Sin(t * Mathf.PI); // 0→1→0
-                float factor = 1f + innerPulseAmplitude * pulse;
-                scale = baseScale * factor;
-            }
-
-            transform.localScale = new Vector3(scale, scale, 1f);
         }
 
         // 3) 结束

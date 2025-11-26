@@ -130,10 +130,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5da00245f2b5418ca21ccbe98e6b166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 0.15
+  duration: 0.12
   outerFlashPortion: 0.25
   innerColor: {r: 0.8666667, g: 0.2784314, b: 0.45490196, a: 1}
-  innerPulseAmplitude: 0
   outerFlash: {fileID: 580405939672778202}
   innerWave: {fileID: 7201643657951014412}
 --- !u!1 &7193272122915554503
