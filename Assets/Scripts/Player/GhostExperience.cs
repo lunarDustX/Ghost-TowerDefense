@@ -9,12 +9,20 @@ public class GhostExperience : MonoBehaviour
     [SerializeField] int startExpToLevel = 20;
     [SerializeField] float expGrowthFactor = 1.4f;  // 每级经验需求系数
 
-    [Header("当前状态（只读观察用）")]
-    public int currentLevel = 1;
-    public int currentExp = 0;
-    public int expToNextLevel = 20;
+    int currentLevel = 1;
+    int currentExp = 0;
+    int expToNextLevel = 20;
 
-    public event Action<int> OnLevelUp;  // 参数是新等级
+    /// <summary>
+    /// 升级事件（参数是新等级）
+    /// </summary>
+    public event Action<int> OnLevelUp;
+
+    /// <summary>
+    /// 经验变化事件：当前经验、当前等级所需经验、当前等级
+    /// 用于经验条 UI
+    /// </summary>
+    public event Action<int, int, int> OnExpChanged;
 
     private void Awake()
     {
@@ -26,10 +34,15 @@ public class GhostExperience : MonoBehaviour
         Instance = this;
 
         expToNextLevel = startExpToLevel;
+
+        // 初始化时通知一次 UI（例如开局 0 / 20, Lv1）
+        OnExpChanged?.Invoke(currentExp, expToNextLevel, currentLevel);
     }
 
     public void AddExp(int amount)
     {
+        if (amount <= 0) return;
+
         currentExp += amount;
 
         // 有可能一次获得很多经验，升多级
@@ -38,6 +51,9 @@ public class GhostExperience : MonoBehaviour
             currentExp -= expToNextLevel;
             LevelUp();
         }
+
+        // 统一在处理完所有升级之后，再通知一次经验变化
+        OnExpChanged?.Invoke(currentExp, expToNextLevel, currentLevel);
     }
 
     private void LevelUp()
@@ -57,4 +73,9 @@ public class GhostExperience : MonoBehaviour
             UpgradeManager.Instance.OnGhostLevelUp(currentLevel);
         }
     }
+
+    // 给 UI / 其它系统用的只读访问器（可选，但好用）
+    public int CurrentLevel => currentLevel;
+    public int CurrentExp => currentExp;
+    public int ExpToNextLevel => expToNextLevel;
 }
