@@ -213,6 +213,7 @@ public enum SFXType
     EnemyDie = 300,
 
     TowerBuffing = 400,
+    AOETowerBuffing = 401,
 
     GhostUpgrade = 500,
 

@@ -15,6 +15,12 @@ public abstract class TowerBase : MonoBehaviour, IGhostBuffable
     [SerializeField] protected Sprite spr_normal;
     [SerializeField] protected Sprite spr_buff;
 
+    [Header("音效")]
+    public SFXType buffingSFX;
+
+    [Header("选中可视化")]
+    [SerializeField] RangeIndicator rangeIndicator;
+
     // 当前实际生效的参数
     protected float currentDamage;
     protected float currentAttackCooldown;
@@ -37,6 +43,24 @@ public abstract class TowerBase : MonoBehaviour, IGhostBuffable
     protected virtual void Start()
     {
         RecalculateStats();
+
+        // 确保初始时范围圈是隐藏的
+        if (rangeIndicator != null)
+            rangeIndicator.SetVisible(false);
+    }
+
+
+    // SelectionManager 调用
+    public virtual void SetSelected(bool selected)
+    {
+        if (rangeIndicator != null)
+        {
+            rangeIndicator.SetVisible(selected);
+        }
+
+        // 你也可以在这里顺手改一下塔 sprite 的明暗 / 外轮廓高亮
+        // 比如：
+        // if (sr != null) sr.color = selected ? selectedColor : normalColor;
     }
 
     public virtual void SetGhostBuffed(bool value)
@@ -51,7 +75,7 @@ public abstract class TowerBase : MonoBehaviour, IGhostBuffable
             sr.sprite = isBuffedByGhost ? spr_buff : spr_normal;
 
         if (isBuffedByGhost)
-            AudioMgr.I.PlaySFX(SFXType.TowerBuffing);
+            AudioMgr.I.PlaySFX(buffingSFX);
 
         RecalculateStats();
     }

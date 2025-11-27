@@ -7,7 +7,7 @@ public class LifeUI : MonoBehaviour
     private GameLifeManager lifeManager;
 
     [Header("Refs")]
-    [SerializeField] TextMeshProUGUI lifeText;
+    [SerializeField] TextMeshPro lifeText;
 
     private void Start()
     {
@@ -40,7 +40,7 @@ public class LifeUI : MonoBehaviour
     {
         if (lifeText != null)
         {
-            lifeText.text = $"HP: {current} / {max}";
+            lifeText.text = $"HP: {current}/{max}";
         }
     }
 }

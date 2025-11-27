@@ -48,7 +48,7 @@ public class SelectionManager : MonoBehaviour
 
     void TrySelect(GameObject go)
     {
-        // 优先判塔（任何继承 TowerBase 的都算）
+        // 优先判塔
         TowerBase tower = go.GetComponentInParent<TowerBase>();
         EnemyHealth enemy = null;
 
@@ -66,14 +66,25 @@ public class SelectionManager : MonoBehaviour
             return;
         }
 
-        // 什么都不是，就清空
         ClearSelection();
     }
 
     void SelectTower(TowerBase tower)
     {
+        // 把旧塔取消选中
+        if (currentTower != null && currentTower != tower)
+        {
+            currentTower.SetSelected(false);
+        }
+
         currentTower = tower;
         currentEnemy = null;
+
+        // 新塔选中
+        if (currentTower != null)
+        {
+            currentTower.SetSelected(true);
+        }
 
         if (selectionUI != null)
         {
@@ -83,7 +94,13 @@ public class SelectionManager : MonoBehaviour
 
     void SelectEnemy(EnemyHealth enemy)
     {
-        currentTower = null;
+        // 取消塔的选中表现
+        if (currentTower != null)
+        {
+            currentTower.SetSelected(false);
+            currentTower = null;
+        }
+
         currentEnemy = enemy;
 
         if (selectionUI != null)
@@ -94,7 +111,12 @@ public class SelectionManager : MonoBehaviour
 
     void ClearSelection()
     {
-        currentTower = null;
+        if (currentTower != null)
+        {
+            currentTower.SetSelected(false);
+            currentTower = null;
+        }
+
         currentEnemy = null;
 
         if (selectionUI != null)

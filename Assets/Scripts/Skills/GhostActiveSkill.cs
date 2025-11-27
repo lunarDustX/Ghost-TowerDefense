@@ -5,6 +5,7 @@ public class GhostActiveSkill : MonoBehaviour
     [Header("Refs")]
     [SerializeField] GhostAura aura;          
     [SerializeField] SlowField slowFieldPrefab;
+    [SerializeField] SkillCooldownUI cdUI;
 
     [Header("技能设置")]
     public KeyCode key = KeyCode.Q;
@@ -40,6 +41,8 @@ public class GhostActiveSkill : MonoBehaviour
         field.ApplyRadius(aura.radius);
 
         cooldownTimer = cooldown;
+        if (cdUI != null)
+            cdUI.StartCooldown(cooldown);
     }
 
     public float CooldownRemaining => Mathf.Max(0f, cooldownTimer);
