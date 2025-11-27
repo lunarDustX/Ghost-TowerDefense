@@ -165,8 +165,8 @@ public abstract class TowerBase : MonoBehaviour, IGhostBuffable
 
         foreach (var hit in hits)
         {
-            var mover = hit.GetComponent<EnemyMover>();
-            var health = hit.GetComponent<EnemyHealth>();
+            var mover = hit.GetComponentInParent<EnemyMover>();
+            var health = hit.GetComponentInParent<EnemyHealth>();
 
             if (mover == null || health == null)
                 continue;

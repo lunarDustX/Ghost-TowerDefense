@@ -54,7 +54,7 @@ public class AoeProjectile : MonoBehaviour
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, explosionRadius, enemyLayer);
         foreach (var hit in hits)
         {
-            var hp = hit.GetComponent<EnemyHealth>();
+            var hp = hit.GetComponentInParent<EnemyHealth>();
             if (hp != null)
             {
                 hp.TakeDamage(damage);

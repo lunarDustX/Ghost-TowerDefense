@@ -33,22 +33,23 @@ public class Projectile : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         if (hasHit || target == null) return;
-        if (other.transform != target) return;
+        if (other.transform.IsChildOf(target) == false) return;
 
         hasHit = true;
 
-        if (other.TryGetComponent(out EnemyHealth hp))
+        var hp = other.GetComponentInParent<EnemyHealth>();
+        if (hp)
         {
             hp.TakeDamage(damage);
+            // 命中特效
+            if (hitVfxPrefab != null)
+            {
+                Instantiate(hitVfxPrefab, target.position, Quaternion.identity);
+                //Instantiate(hitVfxPrefab, transform.position, Quaternion.identity);
+            }
+
+            Destroy(gameObject);
         }
 
-        // 命中特效
-        if (hitVfxPrefab != null)
-        {
-            Instantiate(hitVfxPrefab, target.position, Quaternion.identity);
-            //Instantiate(hitVfxPrefab, transform.position, Quaternion.identity);
-        }
-
-        Destroy(gameObject);
     }
 }
