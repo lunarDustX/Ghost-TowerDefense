@@ -151,6 +151,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6738397770439527406, guid: d67aab90f5f5343c2b73a3eb84efdcb9, type: 3}
+      propertyPath: waves.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6738397770439527406, guid: d67aab90f5f5343c2b73a3eb84efdcb9, type: 3}
+      propertyPath: waves.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 197e40a15748d4036b7c923e75c6c004, type: 2}
+    - target: {fileID: 6738397770439527406, guid: d67aab90f5f5343c2b73a3eb84efdcb9, type: 3}
+      propertyPath: waves.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 01cd8486d21c84bf595d57c04c0350b1, type: 2}
+    - target: {fileID: 6738397770439527406, guid: d67aab90f5f5343c2b73a3eb84efdcb9, type: 3}
+      propertyPath: waves.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3193cfa7cde9a4da68e5d59c7b4beac2, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -296,6 +312,14 @@ PrefabInstance:
     - target: {fileID: 460946023375418701, guid: 96446615beba44cd1af3ab6a3725cca2, type: 3}
       propertyPath: m_Name
       value: AudioMgr
+      objectReference: {fileID: 0}
+    - target: {fileID: 614892916835026008, guid: 96446615beba44cd1af3ab6a3725cca2, type: 3}
+      propertyPath: sfxEntries.Array.data[3].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 3ba0d930c15b5444e87322e1ce57fe53, type: 3}
+    - target: {fileID: 614892916835026008, guid: 96446615beba44cd1af3ab6a3725cca2, type: 3}
+      propertyPath: sfxEntries.Array.data[3].baseVolume
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 2892821628043396174, guid: 96446615beba44cd1af3ab6a3725cca2, type: 3}
       propertyPath: m_LocalPosition.x
