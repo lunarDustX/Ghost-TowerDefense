@@ -15,6 +15,15 @@ public class GhostActiveSkill : MonoBehaviour
 
     private float cooldownTimer = 0f;
 
+    private float currentCooldown;
+    private float currentSlowMultiplier;
+
+    private void Start()
+    {
+        currentCooldown = cooldown;
+        currentSlowMultiplier = slowMultiplier;
+    }
+
     void Update()
     {
         cooldownTimer -= Time.deltaTime;
@@ -36,14 +45,21 @@ public class GhostActiveSkill : MonoBehaviour
         SlowField field = Instantiate(slowFieldPrefab, center, Quaternion.identity);
 
         // 用 Aura 半径 & 技能参数初始化
-        field.slowMultiplier = slowMultiplier;
+        field.slowMultiplier = currentSlowMultiplier;
         field.duration = fieldDuration;
-        field.ApplyRadius(aura.radius);
+        field.ApplyRadius(aura.CurrentRadius);
 
-        cooldownTimer = cooldown;
+        cooldownTimer = currentCooldown;
         if (cdUI != null)
-            cdUI.StartCooldown(cooldown);
+            cdUI.StartCooldown(currentCooldown);
     }
 
     public float CooldownRemaining => Mathf.Max(0f, cooldownTimer);
+
+    // 给 HeroUpgradeTree 调用的接口
+    public void ApplyUpgradeMultipliers(float cooldownMul, float slowEffectMul)
+    {
+        currentCooldown = cooldown * cooldownMul;
+        currentSlowMultiplier = slowMultiplier * slowEffectMul;
+    }
 }

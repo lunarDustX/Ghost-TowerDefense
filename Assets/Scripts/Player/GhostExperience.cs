@@ -67,11 +67,21 @@ public class GhostExperience : MonoBehaviour
 
         OnLevelUp?.Invoke(currentLevel);
 
-        // 通知升级管理器：来一波 3 选 1
-        if (UpgradeManager.Instance != null)
+        // 给升级树 +1 点
+        if (HeroUpgradeTree.Instance != null)
         {
-            UpgradeManager.Instance.OnGhostLevelUp(currentLevel);
+            HeroUpgradeTree.Instance.AddPoints(1);
+
+            var treeUI = FindObjectOfType<SkillTreeUI>();
+            if (treeUI)
+                treeUI.Open();
         }
+
+        //// 通知升级管理器：来一波 3 选 1
+        //if (UpgradeManager.Instance != null)
+        //{
+        //    UpgradeManager.Instance.OnGhostLevelUp(currentLevel);
+        //}
     }
 
     // 给 UI / 其它系统用的只读访问器（可选，但好用）

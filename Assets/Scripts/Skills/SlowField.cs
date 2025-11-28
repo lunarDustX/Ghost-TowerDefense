@@ -46,7 +46,7 @@ public class SlowField : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        var mover = other.GetComponent<EnemyMover>();
+        var mover = other.GetComponentInParent<EnemyMover>();
         if (mover == null) return;
 
         if (affected.Add(mover))
@@ -57,7 +57,7 @@ public class SlowField : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        var mover = other.GetComponent<EnemyMover>();
+        var mover = other.GetComponentInParent<EnemyMover>();
         if (mover == null) return;
 
         if (affected.Remove(mover))

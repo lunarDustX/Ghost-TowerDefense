@@ -13,15 +13,18 @@ public class GhostAura : MonoBehaviour
     [SerializeField] CircleCollider2D col;
     [SerializeField] Transform visual;
 
+    private float currentRadius;
+
     private void Start()
     {
+        currentRadius = radius;
         InitColliderAndVisual();
     }
 
-    private void Reset()
-    {
-        InitColliderAndVisual();
-    }
+    //private void Reset()
+    //{
+    //    InitColliderAndVisual();
+    //}
 
     private void InitColliderAndVisual()
     {
@@ -50,9 +53,9 @@ public class GhostAura : MonoBehaviour
     public void RefreshRadius()
     {
         if (col != null)
-            col.radius = radius;
+            col.radius = currentRadius;
 
-        UpdateVisual(radius);
+        UpdateVisual(currentRadius);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -84,4 +87,13 @@ public class GhostAura : MonoBehaviour
     {
         return (towerLayer.value & (1 << layer)) != 0;
     }
+
+    // 给 HeroUpgradeTree 调用的接口
+    public void ApplyRadiusFromUpgrade(float multiplier)
+    {
+        currentRadius = radius * multiplier;
+        RefreshRadius();
+    }
+
+    public float CurrentRadius => currentRadius;
 }

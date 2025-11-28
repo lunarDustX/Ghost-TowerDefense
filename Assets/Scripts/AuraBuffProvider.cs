@@ -4,56 +4,29 @@ public class AuraBuffProvider : MonoBehaviour
 {
     public static AuraBuffProvider Instance { get; private set; }
 
-    [Header("---------- 塔伤害加成 ----------")]
-    [Tooltip("线性叠加：+0.1 = +10% 伤害")]
-    public float towerDamageAdd = 0f;         // 多次相同升级：0.1, 0.2, 0.3...
-    [Tooltip("乘法叠加：×1.2 = 伤害整体×1.2")]
-    public float towerDamageMul = 1f;         // 稀有/技能类：1.2, 1.5...
+    [Header("基础 Aura buff")]
+    public float baseDamageMultiplier = 1.0f;
+    public float baseAttackSpeedMultiplier = 1.5f;
+    public float baseRangeMultiplier = 1.0f;
 
-    [Header("---------- 塔攻速加成 ----------")]
-    [Tooltip("线性叠加：+0.1 = +10% 攻速")]
-    public float towerAttackSpeedAdd = 0f;    // 多次相同升级：0.1, 0.2, ...
-    [Tooltip("乘法叠加：×1.2 = 攻速整体×1.2")]
-    public float towerAttackSpeedMul = 1f;
-
-    [Header("---------- 塔射程加成 ----------")]
-    [Tooltip("线性叠加：+0.1 = +10% 射程")]
-    public float towerRangeAdd = 0f;
-    [Tooltip("乘法叠加：×1.2 = 射程整体×1.2")]
-    public float towerRangeMul = 1f;
+    // 最终生效倍率（基础 * 升级树）
+    private float finalDamageMul = 1f;
+    private float finalAtkSpeedMul = 1f;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
         Instance = this;
+        ApplyTowerBuffFromUpgrade(1f, 1f);
     }
 
-    /// <summary>
-    /// 最终伤害倍率： (1 + 线性加成) * 乘法加成
-    /// </summary>
-    public float GetDamageMultiplier()
-    {
-        return (1f + towerDamageAdd) * towerDamageMul;
-    }
+    public float GetDamageMultiplier() => finalDamageMul;
+    public float GetAttackSpeedMultiplier() => finalAtkSpeedMul;
+    public float GetRangeMultiplier() => baseRangeMultiplier;
 
-    /// <summary>
-    /// 最终攻速倍率：（1 + 线性加成）* 乘法加成
-    /// 注意：塔的冷却时间 = baseCooldown / 攻速倍率
-    /// </summary>
-    public float GetAttackSpeedMultiplier()
+    // 给 HeroUpgradeTree 调用的接口
+    public void ApplyTowerBuffFromUpgrade(float atkSpeedMulFromTree, float dmgMulFromTree)
     {
-        return (1f + towerAttackSpeedAdd) * towerAttackSpeedMul;
-    }
-
-    /// <summary>
-    /// 最终射程倍率
-    /// </summary>
-    public float GetRangeMultiplier()
-    {
-        return (1f + towerRangeAdd) * towerRangeMul;
+        finalDamageMul = baseDamageMultiplier * dmgMulFromTree;
+        finalAtkSpeedMul = baseAttackSpeedMultiplier * atkSpeedMulFromTree;
     }
 }

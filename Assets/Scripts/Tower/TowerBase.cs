@@ -131,11 +131,11 @@ public abstract class TowerBase : MonoBehaviour, IGhostBuffable
             float atkSpdMul = buff.GetAttackSpeedMultiplier();
             float rangeMul = buff.GetRangeMultiplier();
 
-            currentDamage *= dmgMul;
-            currentRange *= rangeMul;
+            currentDamage = baseDamage * dmgMul;
+            currentRange = baseRange * rangeMul;
 
             // 攻速使用“倍率”来缩短冷却时间
-            currentAttackCooldown = baseAttackCooldown / Mathf.Max(atkSpdMul, 0.01f);
+            currentAttackCooldown = baseAttackCooldown / atkSpdMul;
         }
     }
 

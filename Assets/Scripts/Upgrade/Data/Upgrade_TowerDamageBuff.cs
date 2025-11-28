@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// not in use anymore
 [CreateAssetMenu(menuName = "Upgrade/Tower Damage Buff")]
 public class Upgrade_TowerDamageBuff : UpgradeData
 {
@@ -7,6 +8,7 @@ public class Upgrade_TowerDamageBuff : UpgradeData
 
     public override void Apply()
     {
+        /*
         if (AuraBuffProvider.Instance != null)
         {
             AuraBuffProvider.Instance.towerDamageAdd += extraMultiplier;
@@ -18,5 +20,6 @@ public class Upgrade_TowerDamageBuff : UpgradeData
                 t.ForceRecalculateStats();
             }
         }
+        */
     }
 }

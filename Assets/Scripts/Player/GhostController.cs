@@ -8,10 +8,12 @@ public class GhostController : MonoBehaviour
 
     private Rigidbody2D rb;
     private Vector2 moveInput;
+    private float currentMoveSpeed;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        currentMoveSpeed = moveSpeed;
     }
 
     void Update()
@@ -31,7 +33,13 @@ public class GhostController : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector2 targetPos = rb.position + moveInput * moveSpeed * Time.fixedDeltaTime;
+        Vector2 targetPos = rb.position + moveInput * currentMoveSpeed * Time.fixedDeltaTime;
         rb.MovePosition(targetPos);
+    }
+
+    // 给 HeroUpgradeTree 调用的接口
+    public void ApplyMoveSpeedFromUpgrade(float multiplier)
+    {
+        currentMoveSpeed = moveSpeed * multiplier;
     }
 }
