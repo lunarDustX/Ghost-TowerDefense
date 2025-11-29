@@ -165,7 +165,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6738397770439527406, guid: d67aab90f5f5343c2b73a3eb84efdcb9, type: 3}
       propertyPath: waves.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6738397770439527406, guid: d67aab90f5f5343c2b73a3eb84efdcb9, type: 3}
       propertyPath: waves.Array.data[0]
@@ -179,6 +179,10 @@ PrefabInstance:
       propertyPath: waves.Array.data[2]
       value: 
       objectReference: {fileID: 11400000, guid: 3193cfa7cde9a4da68e5d59c7b4beac2, type: 2}
+    - target: {fileID: 6738397770439527406, guid: d67aab90f5f5343c2b73a3eb84efdcb9, type: 3}
+      propertyPath: waves.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 09c7c6429f86b4f2eb3851e95bdf1822, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

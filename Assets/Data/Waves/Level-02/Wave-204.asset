@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4219757c379c34e8d838b31157bb78dd, type: 3}
   m_Name: Wave-204
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 9166854844311459863, guid: db8c2ea362c904dfba6a22e2d8f1a960, type: 3}
-  pathIndex: 0
-  enemyCount: 2
-  spawnInterval: 2
   preWaveDelay: 1
+  lanes:
+  - enemyPrefab: {fileID: 9166854844311459863, guid: db8c2ea362c904dfba6a22e2d8f1a960, type: 3}
+    pathIndex: 0
+    enemyCount: 2
+    spawnInterval: 2
+    laneStartDelay: 1
