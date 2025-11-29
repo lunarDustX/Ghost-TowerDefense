@@ -70,6 +70,12 @@ public class HeroUpgradeTree : MonoBehaviour
         return s != null ? s.currentLevel : 0;
     }
 
+    public int GetMaxLevel(HeroUpgradeBranch branch)
+    {
+        var s = FindBranch(branch);
+        return s != null ? s.maxLevel : 0;
+    }
+
     public bool IsMaxed(HeroUpgradeBranch branch)
     {
         var s = FindBranch(branch);
@@ -119,44 +125,63 @@ public class HeroUpgradeTree : MonoBehaviour
     #region 各分支对应的“数值公式”
 
     /// <summary>玩家移速倍率</summary>
-    public float GetMoveSpeedMultiplier()
+    public float GetMoveSpeedMultiplier() =>
+        GetMoveSpeedMultiplierByLevel(GetLevel(HeroUpgradeBranch.MoveSpeed));
+
+
+    public float GetMoveSpeedMultiplierByLevel(int lv)
     {
-        int lv = GetLevel(HeroUpgradeBranch.MoveSpeed);
+        lv = Mathf.Clamp(lv, 0, GetMaxLevel(HeroUpgradeBranch.MoveSpeed));
         return 1f + 0.2f * lv;
     }
 
     /// <summary>Aura 范围倍率</summary>
-    public float GetAuraRadiusMultiplier()
+    public float GetAuraRadiusMultiplier() =>
+        GetAuraRadiusMultiplierByLevel(GetLevel(HeroUpgradeBranch.AuraRadius));
+
+    public float GetAuraRadiusMultiplierByLevel(int lv)
     {
-        int lv = GetLevel(HeroUpgradeBranch.AuraRadius);
+        lv = Mathf.Clamp(lv, 0, GetMaxLevel(HeroUpgradeBranch.AuraRadius));
         return 1f + 0.3f * lv;
     }
 
     /// <summary>技能冷却倍率</summary>
-    public float GetSkillCooldownMultiplier()
+    public float GetSkillCooldownMultiplier() =>
+        GetSkillCooldownMultiplierByLevel(GetLevel(HeroUpgradeBranch.SkillCooldown));
+
+    public float GetSkillCooldownMultiplierByLevel(int lv)
     {
-        int lv = GetLevel(HeroUpgradeBranch.SkillCooldown);
+        lv = Mathf.Clamp(lv, 0, GetMaxLevel(HeroUpgradeBranch.SkillCooldown));
         return 1f - 0.2f * lv;
     }
 
     /// <summary>技能减速效果倍率</summary>
-    public float GetSkillSlowEffectMultiplier()
+    public float GetSkillSlowEffectMultiplier() =>
+        GetSkillSlowEffectMultiplierByLevel(GetLevel(HeroUpgradeBranch.SkillSlowEffect));
+
+    public float GetSkillSlowEffectMultiplierByLevel(int lv)
     {
-        int lv = GetLevel(HeroUpgradeBranch.SkillSlowEffect);
-        return 1f + 0.5f * lv;
+        lv = Mathf.Clamp(lv, 0, GetMaxLevel(HeroUpgradeBranch.SkillSlowEffect));
+        return 0f + 0.2f * lv;
     }
 
     /// <summary>攻速倍率</summary>
-    public float GetTowerAttackSpeedMultiplier()
+    public float GetTowerAttackSpeedMultiplier() =>
+        GetTowerAttackSpeedMultiplierByLevel(GetLevel(HeroUpgradeBranch.TowerAttackSpeed));
+
+    public float GetTowerAttackSpeedMultiplierByLevel(int lv)
     {
-        int lv = GetLevel(HeroUpgradeBranch.TowerAttackSpeed);
+        lv = Mathf.Clamp(lv, 0, GetMaxLevel(HeroUpgradeBranch.TowerAttackSpeed));
         return 1f + 0.5f * lv;
     }
 
     /// <summary>伤害倍率</summary>
-    public float GetTowerDamageMultiplier()
+    public float GetTowerDamageMultiplier() =>
+        GetTowerDamageMultiplierByLevel(GetLevel(HeroUpgradeBranch.TowerDamage));
+
+    public float GetTowerDamageMultiplierByLevel(int lv)
     {
-        int lv = GetLevel(HeroUpgradeBranch.TowerDamage);
+        lv = Mathf.Clamp(lv, 0, GetMaxLevel(HeroUpgradeBranch.TowerDamage));
         return 1f + 0.5f * lv;
     }
 

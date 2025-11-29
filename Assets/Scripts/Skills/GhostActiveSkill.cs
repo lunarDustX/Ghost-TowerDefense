@@ -11,7 +11,7 @@ public class GhostActiveSkill : MonoBehaviour
     public KeyCode key = KeyCode.Q;
     public float cooldown = 10f;
     public float fieldDuration = 3f;
-    public float slowMultiplier = 0.5f;  // 速度倍率：0.5 = -50%
+    public float slowMultiplier = 0.4f;  // -40%
 
     private float cooldownTimer = 0f;
 
@@ -60,6 +60,6 @@ public class GhostActiveSkill : MonoBehaviour
     public void ApplyUpgradeMultipliers(float cooldownMul, float slowEffectMul)
     {
         currentCooldown = cooldown * cooldownMul;
-        currentSlowMultiplier = slowMultiplier * slowEffectMul;
+        currentSlowMultiplier = slowMultiplier + slowEffectMul; // 特殊计算
     }
 }

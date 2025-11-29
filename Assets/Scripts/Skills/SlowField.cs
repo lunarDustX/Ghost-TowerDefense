@@ -51,7 +51,7 @@ public class SlowField : MonoBehaviour
 
         if (affected.Add(mover))
         {
-            mover.AddSpeedMultiplier(slowMultiplier);
+            mover.AddSpeedMultiplier(1-slowMultiplier);
         }
     }
 
@@ -62,7 +62,7 @@ public class SlowField : MonoBehaviour
 
         if (affected.Remove(mover))
         {
-            mover.RemoveSpeedMultiplier(slowMultiplier);
+            mover.RemoveSpeedMultiplier(1-slowMultiplier);
         }
     }
 

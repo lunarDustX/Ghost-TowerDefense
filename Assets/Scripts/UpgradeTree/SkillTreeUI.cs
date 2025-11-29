@@ -7,6 +7,9 @@ public class SkillTreeUI : MonoBehaviour
 {
     [SerializeField] HeroUpgradeTree upgradeTree;
 
+    [Header("Tooltip")]
+    [SerializeField] SkillTreeTooltip tooltip;
+
     [Header("隐藏 / 显示用根节点（整个面板）")]
     public GameObject rootPanel;
 
@@ -35,9 +38,16 @@ public class SkillTreeUI : MonoBehaviour
 
     void Update()
     {
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             TogglePanel();
+        }
+#endif
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (rootPanel.activeSelf)
+                Close();
         }
     }
 
@@ -52,6 +62,7 @@ public class SkillTreeUI : MonoBehaviour
     {
         rootPanel.SetActive(false);
         Time.timeScale = 1;
+        HideTooltip();
     }
 
     public void TogglePanel()
@@ -67,6 +78,7 @@ public class SkillTreeUI : MonoBehaviour
         else
         {
             Time.timeScale = 1;
+            HideTooltip();
         }
     }
 
@@ -146,6 +158,138 @@ public class SkillTreeUI : MonoBehaviour
             // 不满足条件：技能点不足 / 已满级，想的话可以做个提示
             Debug.Log($"[SkillTreeUI] 无法升级：{branch}");
         }
+    }
+
+    #region Hover
+    public void ShowTooltip(HeroUpgradeBranch branch, Vector2 screenPos)
+    {
+        if (tooltip == null || upgradeTree == null) return;
+
+        string title = GetBranchTitle(branch);
+        string body = BuildNextLevelDescription(branch);
+
+        tooltip.Show(title, body, screenPos);
+    }
+
+    public void MoveTooltip(Vector2 screenPos)
+    {
+        if (tooltip == null) return;
+        tooltip.Move(screenPos);
+    }
+
+    public void HideTooltip()
+    {
+        if (tooltip == null) return;
+        tooltip.Hide();
+    }
+    #endregion
+
+    string GetBranchTitle(HeroUpgradeBranch branch)
+    {
+        switch (branch)
+        {
+            case HeroUpgradeBranch.MoveSpeed: return "移动速度";
+            case HeroUpgradeBranch.AuraRadius: return "Aura Radius";
+            case HeroUpgradeBranch.SkillCooldown: return "主动技能冷却";
+            case HeroUpgradeBranch.SkillSlowEffect: return "Skill";
+            case HeroUpgradeBranch.TowerAttackSpeed: return "Tower Atk Spd";
+            case HeroUpgradeBranch.TowerDamage: return "塔伤害（Aura 内）";
+            default: return branch.ToString();
+        }
+    }
+
+    string BuildNextLevelDescription(HeroUpgradeBranch branch)
+    {
+        if (upgradeTree == null) return "";
+
+        int curLv = upgradeTree.GetLevel(branch);
+        int maxLv = upgradeTree.GetMaxLevel(branch);
+
+        //if (curLv >= maxLv)
+        //{
+        //    return $"当前等级：Lv {curLv}\n已达到最高等级。";
+        //}
+
+        int nextLv = curLv + 1;
+        nextLv = Mathf.Min(nextLv, maxLv);
+
+        switch (branch)
+        {
+            case HeroUpgradeBranch.MoveSpeed:
+                {
+                    float curMul = upgradeTree.GetMoveSpeedMultiplierByLevel(curLv);
+                    float nextMul = upgradeTree.GetMoveSpeedMultiplierByLevel(nextLv);
+
+                    float curPct = (curMul - 1f) * 100f;
+                    float nextPct = (nextMul - 1f) * 100f;
+
+                    return
+                        $"move speed +{nextPct:0}%";
+                }
+
+            case HeroUpgradeBranch.AuraRadius:
+                {
+                    float curMul = upgradeTree.GetAuraRadiusMultiplierByLevel(curLv);
+                    float nextMul = upgradeTree.GetAuraRadiusMultiplierByLevel(nextLv);
+
+                    float curPct = (curMul - 1f) * 100f;
+                    float nextPct = (nextMul - 1f) * 100f;
+
+                    return
+                        $"aura radius +{nextPct:0}%";
+                }
+
+            case HeroUpgradeBranch.SkillCooldown:
+                {
+                    float curMul = upgradeTree.GetSkillCooldownMultiplierByLevel(curLv);
+                    float nextMul = upgradeTree.GetSkillCooldownMultiplierByLevel(nextLv);
+
+                    float curReduce = (1f - curMul) * 100f;
+                    float nextReduce = (1f - nextMul) * 100f;
+
+                    return
+                        $"当前等级：Lv {curLv}（冷却时间 -{curReduce:0}%";
+                }
+
+            case HeroUpgradeBranch.SkillSlowEffect:
+                {
+                    float curMul = upgradeTree.GetSkillSlowEffectMultiplierByLevel(curLv);
+                    float nextMul = upgradeTree.GetSkillSlowEffectMultiplierByLevel(nextLv);
+
+                    //float curPct = (curMul - 1f) * 100f;
+                    //float nextPct = (nextMul - 1f) * 100f;
+
+                    return
+                        $"skill slow enemy speed {(nextMul + 0.4f)*100f :0}%";
+                }
+
+            case HeroUpgradeBranch.TowerAttackSpeed:
+                {
+                    float curMul = upgradeTree.GetTowerAttackSpeedMultiplierByLevel(curLv);
+                    float nextMul = upgradeTree.GetTowerAttackSpeedMultiplierByLevel(nextLv);
+
+                    float curPct = (curMul - 1f) * 100f;
+                    float nextPct = (nextMul - 1f) * 100f;
+
+                    return
+                        $"tower attack speed +{nextPct + 50 :0}%";
+                }
+
+            case HeroUpgradeBranch.TowerDamage:
+                {
+                    float curMul = upgradeTree.GetTowerDamageMultiplierByLevel(curLv);
+                    float nextMul = upgradeTree.GetTowerDamageMultiplierByLevel(nextLv);
+
+                    float curPct = (curMul - 1f) * 100f;
+                    float nextPct = (nextMul - 1f) * 100f;
+
+                    return
+                        $"当前等级：Lv {curLv}（Aura 内塔伤害 +{curPct:0}%）\n" +
+                        $"下一级：Lv {nextLv}（Aura 内塔伤害 +{nextPct:0}%）";
+                }
+        }
+
+        return "";
     }
 }
 
