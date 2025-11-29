@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4219757c379c34e8d838b31157bb78dd, type: 3}
-  m_Name: Wave-202
+  m_Name: Wave-204
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 9166854844311459863, guid: 866200c657c88452fb99031cb94b87e1, type: 3}
+  enemyPrefab: {fileID: 9166854844311459863, guid: db8c2ea362c904dfba6a22e2d8f1a960, type: 3}
   pathIndex: 0
-  enemyCount: 6
-  spawnInterval: 0.5
+  enemyCount: 2
+  spawnInterval: 2
   preWaveDelay: 1

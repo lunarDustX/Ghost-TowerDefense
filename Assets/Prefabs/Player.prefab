@@ -328,8 +328,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08f8870c7c23a4fcbaef111726ca3222, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startExpToLevel: 20
-  expGrowthFactor: 1.4
+  startExpToLevel: 25
+  expGrowthFactor: 1.5
 --- !u!114 &4967498506239500874
 MonoBehaviour:
   m_ObjectHideFlags: 0
