@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4219757c379c34e8d838b31157bb78dd, type: 3}
-  m_Name: Wave-303
+  m_Name: Wave-304
   m_EditorClassIdentifier: 
   preWaveDelay: 1
   lanes:
-  - enemyPrefab: {fileID: 9166854844311459863, guid: 00ba035312c40460c9efd24c22eb8d02, type: 3}
+  - enemyPrefab: {fileID: 9166854844311459863, guid: db8c2ea362c904dfba6a22e2d8f1a960, type: 3}
     pathIndex: 0
-    enemyCount: 5
-    spawnInterval: 1
+    enemyCount: 2
+    spawnInterval: 2
     laneStartDelay: 1
   - enemyPrefab: {fileID: 9166854844311459863, guid: 866200c657c88452fb99031cb94b87e1, type: 3}
     pathIndex: 1
-    enemyCount: 5
+    enemyCount: 6
     spawnInterval: 1
-    laneStartDelay: 3
+    laneStartDelay: 6
