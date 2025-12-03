@@ -41,6 +41,8 @@ public class GameLifeManager : MonoBehaviour
 
         OnLifeChanged?.Invoke(currentLife, maxLife);
 
+        TheGoal.Instance.PlayHitFX();
+
         if (currentLife <= 0)
         {
             HandleGameOver();

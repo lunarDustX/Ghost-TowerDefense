@@ -40,7 +40,7 @@ public class LifeUI : MonoBehaviour
     {
         if (lifeText != null)
         {
-            lifeText.text = $"HP: {current}/{max}";
+            lifeText.text = $"HP: {current}";
         }
     }
 }
